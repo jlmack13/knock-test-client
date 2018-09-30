@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import EntryList from './containers/entryList'
+
 
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {entriesReceived: ""}
-    this.getEntries = this.getEntries.bind(this)
+    this.state = {
+      entries: []
+    }
   }
-  getEntries() {
-    this.setState({entriesReceived: "Are there any entries?"})
+  getEntries = () => {
+   fetch("http://localhost:3001/api/entries")
+     .then(response => response.json())
+     .then((entries => this.setState({
+       entries
+     })));
   }
 
   render() {
@@ -35,7 +42,8 @@ class App extends Component {
 
         <button onClick={this.getEntries} style={{marginTop: '25vh'}}>Get Entries</button>
         <h2>Entries: </h2>
-        <p>{this.state.entriesReceived}</p>
+        <EntryList entries={this.state.entries}/>
+
       </div>
     );
   }

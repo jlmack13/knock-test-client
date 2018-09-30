@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import EntryList from './containers/entryList'
-
+import $ from 'jquery';
 
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      entries: []
-    }
+    this.state = {entriesReceived: ""}
+    this.getEntries = this.getEntries.bind(this)
   }
-  getEntries = () => {
-   fetch("http://localhost:3001/api/entries")
-     .then(response => response.json())
-     .then((entries => this.setState({
-       entries
-     })));
+  getEntries() {
+    $.ajax({
+      url: "http://localhost:3001/api/entries",
+      type: "GET",
+      context: this,
+      success: function(result) {
+        this.setState({entriesReceived: JSON.stringify(result)})
+      }
+    })
   }
 
   render() {
@@ -42,7 +43,7 @@ class App extends Component {
 
         <button onClick={this.getEntries} style={{marginTop: '25vh'}}>Get Entries</button>
         <h2>Entries: </h2>
-        <EntryList entries={this.state.entries}/>
+        <p>{this.state.entriesReceived}</p>
 
       </div>
     );

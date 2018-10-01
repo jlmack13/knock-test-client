@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Entry from '../components/Entry';
 
+
 class EntryList extends Component {
+    
     render() {
         return(
             <div className="entry-container">
